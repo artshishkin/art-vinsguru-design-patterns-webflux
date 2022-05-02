@@ -1,0 +1,4 @@
+app.external.service.url:
+  product: http://localhost:7075/sec01/product
+  promotion: http://localhost:7075/sec01/promotion
+  review: http://localhost:7075/sec01/review
