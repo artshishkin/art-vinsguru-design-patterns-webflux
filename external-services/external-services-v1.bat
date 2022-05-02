@@ -1,0 +1,1 @@
+java -jar external-services-v1.jar --server.port=7075
