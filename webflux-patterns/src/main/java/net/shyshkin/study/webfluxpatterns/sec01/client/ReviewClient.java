@@ -24,6 +24,7 @@ public class ReviewClient {
                 .uri("/{id}", id)
                 .retrieve()
                 .bodyToFlux(Review.class)
-                .collectList();
+                .collectList()
+                .onErrorReturn(List.of());
     }
 }

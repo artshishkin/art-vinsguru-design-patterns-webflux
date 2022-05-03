@@ -2,9 +2,11 @@ package net.shyshkin.study.webfluxpatterns.sec01.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec01.dto.ProductAggregate;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -70,6 +74,7 @@ class ProductAggregateControllerTest {
     @ParameterizedTest
     @DisplayName("When one of services respond with 404 or 500 Status code we got 500 from Aggregation controller")
     @ValueSource(ints = {5, 7})
+    @Disabled("Resilience fixed")
     void getProductAggregate_500Error(int productId) {
 
         //when
@@ -81,6 +86,29 @@ class ProductAggregateControllerTest {
                 .expectStatus().is5xxServerError()
                 .expectBody(String.class)
                 .value(aggregate -> log.debug("Error: {}", aggregate));
+    }
+
+    @ParameterizedTest
+    @DisplayName("When promotion or review services respond with 404 or 500 Status code we should get 200 from Aggregation controller")
+    @MethodSource("productIdStream")
+    void getProductAggregate_200_OK_whenExternalServiceFails(int productId) {
+
+        //when
+        webTestClient.get()
+                .uri("/sec01/product/{id}", productId)
+                .exchange()
+
+                //then
+                .expectStatus().isOk()
+                .expectBody(ProductAggregate.class)
+                .value(aggregate -> assertThat(aggregate)
+                        .hasNoNullFieldsOrProperties()
+                        .hasFieldOrPropertyWithValue("id", productId))
+                .value(aggregate -> log.debug("{}", aggregate));
+    }
+
+    static IntStream productIdStream() {
+        return IntStream.rangeClosed(1, 50);
     }
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

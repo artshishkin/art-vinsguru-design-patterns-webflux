@@ -6,8 +6,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+
 @Component
 public class PromotionClient {
+
+    public static final PromotionResponse NO_PROMOTION = PromotionResponse.builder()
+            .id(-1)
+            .discount(0.0)
+            .type("NO_PROMOTION")
+            .endDate(LocalDate.now())
+            .build();
 
     private final WebClient webClient;
 
@@ -21,6 +30,8 @@ public class PromotionClient {
         return webClient.get()
                 .uri("/{id}", id)
                 .retrieve()
-                .bodyToMono(PromotionResponse.class);
+                .bodyToMono(PromotionResponse.class)
+//                .onErrorResume(ex->Mono.empty())
+                .onErrorReturn(NO_PROMOTION);
     }
 }
