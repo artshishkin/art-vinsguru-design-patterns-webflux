@@ -32,7 +32,7 @@ public class ProductAggregatorService {
                 .discount(promotion.getDiscount())
                 .endDate(promotion.getEndDate())
                 .discountedPrice(product.getPrice() * 0.01 * (100 - promotion.getDiscount()))
-                .amountSaved(product.getPrice() * promotion.getDiscount() / 100)
+                .amountSaved(product.getPrice() * promotion.getDiscount() * 0.01)
                 .build();
         return ProductAggregate.builder()
                 .id(product.getId())
