@@ -2,7 +2,6 @@ package net.shyshkin.study.webfluxpatterns.sec01.client;
 
 import net.shyshkin.study.webfluxpatterns.sec01.dto.Review;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -22,7 +21,7 @@ public class ReviewClient {
 
     public Mono<List<Review>> getReviews(Integer id) {
         return webClient.get()
-                .uri("{id}", id)
+                .uri("/{id}", id)
                 .retrieve()
                 .bodyToFlux(Review.class)
                 .collectList();

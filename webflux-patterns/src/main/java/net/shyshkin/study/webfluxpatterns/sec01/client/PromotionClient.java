@@ -19,7 +19,7 @@ public class PromotionClient {
 
     public Mono<PromotionResponse> getPromotion(Integer id) {
         return webClient.get()
-                .uri("{id}", id)
+                .uri("/{id}", id)
                 .retrieve()
                 .bodyToMono(PromotionResponse.class);
     }
