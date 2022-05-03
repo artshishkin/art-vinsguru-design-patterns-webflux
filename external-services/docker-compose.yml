@@ -5,3 +5,5 @@ services:
     image: artarkatesoft/vinsguru-external-services
     ports:
       - '7075:7070'
+    environment:
+      'sec01.delay.response': 3000
