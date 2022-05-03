@@ -71,6 +71,21 @@ class ProductAggregateControllerTest {
                 .value(aggregate -> log.debug("{}", aggregate));
     }
 
+    @Test
+    @DisplayName("When product service returns error aggregator service should return service should respond 404")
+    void getProductAggregate_404() {
+        //given
+        Integer productId = 51;
+
+        //when
+        webTestClient.get()
+                .uri("/sec01/product/{id}", productId)
+                .exchange()
+
+                //then
+                .expectStatus().isNotFound();
+    }
+
     @ParameterizedTest
     @DisplayName("When one of services respond with 404 or 500 Status code we got 500 from Aggregation controller")
     @ValueSource(ints = {5, 7})
