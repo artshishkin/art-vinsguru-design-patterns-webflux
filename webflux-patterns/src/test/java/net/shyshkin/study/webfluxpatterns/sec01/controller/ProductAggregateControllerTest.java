@@ -2,7 +2,10 @@ package net.shyshkin.study.webfluxpatterns.sec01.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec01.dto.ProductAggregate;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContextInitializer;
@@ -39,7 +42,8 @@ class ProductAggregateControllerTest {
             .waitingFor(Wait.forLogMessage(".*Started ExternalServicesApplication.*\\n", 1));
 
     @Test
-    void getProductAggregate() {
+    @DisplayName("When every service returns correct data aggregator service should respond correctly")
+    void getProductAggregate_ok() {
         //given
         Integer productId = 1;
 
@@ -61,6 +65,22 @@ class ProductAggregateControllerTest {
                         )
                 )
                 .value(aggregate -> log.debug("{}", aggregate));
+    }
+
+    @ParameterizedTest
+    @DisplayName("When one of services respond with 404 or 500 Status code we got 500 from Aggregation controller")
+    @ValueSource(ints = {5, 7})
+    void getProductAggregate_500Error(int productId) {
+
+        //when
+        webTestClient.get()
+                .uri("/sec01/product/{id}", productId)
+                .exchange()
+
+                //then
+                .expectStatus().is5xxServerError()
+                .expectBody(String.class)
+                .value(aggregate -> log.debug("Error: {}", aggregate));
     }
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
