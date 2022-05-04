@@ -4,6 +4,7 @@ app.external.service.url:
   review: http://localhost:7075/sec01/review
   delta: http://localhost:7075/sec02/delta
   jetblue: http://localhost:7075/sec02/jetblue
+  frontier: http://localhost:7075/sec02/frontier
 
 logging.level:
   net.shyshkin: DEBUG
