@@ -4,11 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.common.ExternalServiceAbstractTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
+@ActiveProfiles("sec02")
 class JetBlueClientTest extends ExternalServiceAbstractTest {
 
     @Autowired
