@@ -1,10 +1,13 @@
-app.external.service.url:
-  product: http://localhost:7075/sec01/product
-  promotion: http://localhost:7075/sec01/promotion
-  review: http://localhost:7075/sec01/review
-  delta: http://localhost:7075/sec02/delta
-  jetblue: http://localhost:7075/sec02/jetblue
-  frontier: http://localhost:7075/sec02/frontier
+app.external.service:
+  baseUrl: http://localhost:7075
+  url:
+    product: ${app.external.service.baseUrl}/sec01/product
+    promotion: ${app.external.service.baseUrl}/sec01/promotion
+    review: ${app.external.service.baseUrl}/sec01/review
+    delta: ${app.external.service.baseUrl}/sec02/delta
+    jetblue: ${app.external.service.baseUrl}/sec02/jetblue
+    frontier: ${app.external.service.baseUrl}/sec02/frontier
+
 
 logging.level:
   net.shyshkin: DEBUG
