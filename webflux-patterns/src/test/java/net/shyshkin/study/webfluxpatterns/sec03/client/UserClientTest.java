@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
@@ -92,9 +91,14 @@ class UserClientTest extends ExternalServiceAbstractTest {
         StepVerifier.create(client.deduct(paymentRequest))
 
                 //then
-                .verifyErrorSatisfies(error -> assertThat(error)
-                        .isInstanceOf(WebClientResponseException.class)
-                        .hasMessageContaining("404 Not Found"));
+                .consumeNextWith(paymentResponse -> assertAll(
+                        () -> assertThat(paymentResponse.getName()).isNull(),
+                        () -> assertThat(paymentResponse.getUserId()).isEqualTo(userId),
+                        () -> assertThat(paymentResponse.getStatus()).isEqualTo(Status.FAILED),
+                        () -> assertThat(paymentResponse.getBalance()).isEqualTo(amount),
+                        () -> log.debug("Payment Response: {}", paymentResponse)
+                ))
+                .verifyComplete();
     }
 
     @Test
@@ -112,12 +116,14 @@ class UserClientTest extends ExternalServiceAbstractTest {
         StepVerifier.create(client.deduct(paymentRequest))
 
                 //then
-                .verifyErrorSatisfies(error -> {
-                    error.printStackTrace();
-                    assertThat(error)
-                            .isInstanceOf(WebClientResponseException.class)
-                            .hasMessageContaining("500 Internal Server Error");
-                });
+                .consumeNextWith(paymentResponse -> assertAll(
+                        () -> assertThat(paymentResponse.getName()).isNotEmpty(),
+                        () -> assertThat(paymentResponse.getUserId()).isEqualTo(userId),
+                        () -> assertThat(paymentResponse.getStatus()).isEqualTo(Status.FAILED),
+                        () -> assertThat(paymentResponse.getBalance()).isNotEqualTo(amount),
+                        () -> log.debug("Payment Response: {}", paymentResponse)
+                ))
+                .verifyComplete();
     }
 
     @Test
