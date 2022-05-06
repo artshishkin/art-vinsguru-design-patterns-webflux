@@ -9,6 +9,7 @@ app.external.service:
     frontier: ${app.external.service.baseUrl}/sec02/frontier
     sec03:
       product: ${app.external.service.baseUrl}/sec03/product
+      user: ${app.external.service.baseUrl}/sec03/user
 
 logging.level:
   net.shyshkin: DEBUG
