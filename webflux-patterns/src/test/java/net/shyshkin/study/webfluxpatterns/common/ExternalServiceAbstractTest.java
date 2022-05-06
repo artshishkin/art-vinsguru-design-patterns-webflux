@@ -6,7 +6,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -20,9 +19,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public abstract class ExternalServiceAbstractTest {
 
     @Container
-    protected static GenericContainer<?> externalServices = new GenericContainer<>("artarkatesoft/vinsguru-external-services")
-            .withExposedPorts(7070)
-            .waitingFor(Wait.forLogMessage(".*Started ExternalServicesApplication.*\\n", 1));
+    static ExternalServicesContainers externalServicesContainers = ExternalServicesContainers.getInstance();
+
+    protected static GenericContainer<?> externalServices = externalServicesContainers.getExternalServices();
 
     protected static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
