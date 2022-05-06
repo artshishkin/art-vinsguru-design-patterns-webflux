@@ -55,7 +55,7 @@
             <artifactId>external-services</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../external-services/external-services-v1.jar</systemPath>
+            <systemPath>${project.basedir}/../external-services/external-services-v2.jar</systemPath>
         </dependency>
 
     </dependencies>

@@ -2,7 +2,7 @@ FROM openjdk:11-jre-slim
 
 WORKDIR application
 
-ADD external-services-v1.jar app.jar
+ADD external-services-v2.jar app.jar
 
 EXPOSE 7070
 
