@@ -10,6 +10,7 @@ app.external.service:
     sec03:
       product: ${app.external.service.baseUrl}/sec03/product
       user: ${app.external.service.baseUrl}/sec03/user
+      inventory: ${app.external.service.baseUrl}/sec03/inventory
 
 logging.level:
   net.shyshkin: DEBUG
