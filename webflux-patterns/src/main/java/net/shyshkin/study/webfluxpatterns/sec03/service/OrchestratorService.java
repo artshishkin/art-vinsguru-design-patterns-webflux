@@ -1,14 +1,17 @@
 package net.shyshkin.study.webfluxpatterns.sec03.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec03.client.ProductClient;
 import net.shyshkin.study.webfluxpatterns.sec03.dto.*;
+import net.shyshkin.study.webfluxpatterns.sec03.util.DebugUtil;
 import net.shyshkin.study.webfluxpatterns.sec03.util.OrchestrationUtil;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrchestratorService {
@@ -24,6 +27,7 @@ public class OrchestratorService {
                 .doOnNext(OrchestrationUtil::buildRequestContext)
                 .flatMap(fulfillmentService::placeOrder)
                 .doOnNext(this::doOrderPostProcessing)
+                .doOnNext(ctx -> DebugUtil.print(log, ctx))
                 .map(this::toOrderResponse);
     }
 
