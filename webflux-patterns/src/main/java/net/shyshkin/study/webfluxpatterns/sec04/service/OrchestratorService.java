@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec04.client.ProductClient;
 import net.shyshkin.study.webfluxpatterns.sec04.dto.*;
 import net.shyshkin.study.webfluxpatterns.sec04.util.DebugUtil;
-import net.shyshkin.study.webfluxpatterns.sec04.util.OrchestrationUtil;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +23,7 @@ public class OrchestratorService {
 
         return mono.map(OrchestrationRequestContext::new)
                 .flatMap(this::getProduct)
-                .doOnNext(OrchestrationUtil::buildRequestContext)
+//                .doOnNext(OrchestrationUtil::buildRequestContext)
                 .flatMap(fulfillmentService::placeOrder)
                 .doOnNext(this::doOrderPostProcessing)
                 .doOnNext(ctx -> DebugUtil.print(log, ctx))
