@@ -69,6 +69,7 @@ public class InventoryClient {
 
     private InventoryResponse fallbackInventoryResponse(InventoryRequest request) {
         return InventoryResponse.builder()
+                .inventoryId(null)
                 .productId(request.getProductId())
                 .quantity(request.getQuantity())
                 .remainingQuantity(null)

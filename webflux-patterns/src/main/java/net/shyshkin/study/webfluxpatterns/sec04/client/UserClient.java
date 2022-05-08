@@ -70,6 +70,7 @@ public class UserClient {
 
     private PaymentResponse fallbackPaymentResponse(PaymentRequest request) {
         return PaymentResponse.builder()
+                .paymentId(null)
                 .userId(request.getUserId())
                 .name(null)
                 .balance(request.getAmount())

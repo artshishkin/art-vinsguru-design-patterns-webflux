@@ -66,7 +66,7 @@ public class ShippingClient {
     private ShippingResponse fallbackShippingResponse(ShippingRequest request) {
         return ShippingResponse.builder()
                 .address(null)
-                .orderId(request.getOrderId())
+                .shippingId(null)
                 .expectedDelivery(null)
                 .quantity(request.getQuantity())
                 .status(Status.FAILED)
