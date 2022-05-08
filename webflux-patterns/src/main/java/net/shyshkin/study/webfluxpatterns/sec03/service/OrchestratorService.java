@@ -37,7 +37,7 @@ public class OrchestratorService {
                 .getProduct(productId)
                 .map(Product::getPrice)
                 .doOnNext(ctx::setProductPrice)
-                .thenReturn(ctx);
+                .map(i -> ctx);
     }
 
     private void doOrderPostProcessing(OrchestrationRequestContext ctx) {

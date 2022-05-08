@@ -9,7 +9,6 @@ import net.shyshkin.study.webfluxpatterns.sec03.client.InventoryClient;
 import net.shyshkin.study.webfluxpatterns.sec03.client.ProductClient;
 import net.shyshkin.study.webfluxpatterns.sec03.client.UserClient;
 import net.shyshkin.study.webfluxpatterns.sec03.dto.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -127,7 +126,6 @@ class OrderControllerTest extends ExternalServiceAbstractTest {
     }
 
     @Test
-    @Disabled("Bug - HttpResponse 500")
     void placeOrder_absentProduct() {
         //given
         int productId = 51;
@@ -149,17 +147,8 @@ class OrderControllerTest extends ExternalServiceAbstractTest {
                 .exchange()
 
                 //then
-                .expectStatus().isOk()
-                .expectBody(OrderResponse.class)
-                .value(orderResponse -> assertAll(
-                        () -> assertThat(orderResponse.getOrderId()).isNotNull(),
-                        () -> assertThat(orderResponse.getProductId()).isEqualTo(productId),
-                        () -> assertThat(orderResponse.getUserId()).isEqualTo(userId),
-                        () -> assertThat(orderResponse.getAddress()).isNull(),
-                        () -> assertThat(orderResponse.getExpectedDelivery()).isNull(),
-                        () -> assertThat(orderResponse.getStatus()).isEqualTo(Status.FAILED),
-                        () -> log.debug("Order Response: {}", orderResponse)
-                ));
+                .expectStatus().isNotFound()
+                .expectBody().isEmpty();
 
         var finalState = new ServicesState(productId, userId).stateMono.block();
         log.debug("Initial State: {}. Final State: {}", initialState, finalState);
