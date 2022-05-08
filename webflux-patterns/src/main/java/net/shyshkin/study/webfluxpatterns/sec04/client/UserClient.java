@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 public class UserClient {
 
     private static final String DEDUCT = "/deduct";
-    private static final String REFUND = "/restore";
+    private static final String REFUND = "/refund";
 
     private final WebClient webClient;
     private final ObjectMapper objectMapper;
@@ -53,7 +53,7 @@ public class UserClient {
                 .retrieve()
                 .bodyToMono(PaymentResponse.class)
                 .onErrorResume(
-                        error -> error instanceof WebClientResponseException && ((WebClientResponseException) error).getStatusCode().is5xxServerError(),
+                        error -> error instanceof WebClientResponseException && ((WebClientResponseException) error).getStatusCode().is4xxClientError(),
                         error -> extractResponse((WebClientResponseException) error))
                 .onErrorReturn(fallbackPaymentResponse(request));
     }
