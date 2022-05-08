@@ -7,6 +7,8 @@ import net.shyshkin.study.webfluxpatterns.sec03.client.ProductClient;
 import net.shyshkin.study.webfluxpatterns.sec03.client.UserClient;
 import net.shyshkin.study.webfluxpatterns.sec03.dto.*;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -216,6 +218,40 @@ class OrderControllerTest extends ExternalServiceAbstractTest {
                         () -> assertThat(orderResponse.getExpectedDelivery()).isNull(),
                         () -> assertThat(orderResponse.getStatus()).isEqualTo(Status.FAILED),
                         () -> log.debug("Order Response: {}", orderResponse)
+                ));
+    }
+
+    @RepeatedTest(10)
+    @DisplayName("Shipping Service randomly drops an error so search debug logs for FAILED status")
+    void placeOrder_shippingFailure() {
+        //given
+        int productId = 4;
+        int userId = 3;
+        int quantity = 0;
+
+        OrderRequest orderRequest = OrderRequest.builder()
+                .productId(productId)
+                .userId(userId)
+                .quantity(quantity)
+                .build();
+
+        //when
+        webClient.post()
+                .uri("/sec03/order")
+                .bodyValue(orderRequest)
+                .exchange()
+
+                //then
+                .expectStatus().isOk()
+                .expectBody(OrderResponse.class)
+                .value(orderResponse -> assertAll(
+                        () -> assertThat(orderResponse.getOrderId()).isNotNull(),
+                        () -> assertThat(orderResponse.getProductId()).isEqualTo(productId),
+                        () -> assertThat(orderResponse.getUserId()).isEqualTo(userId),
+                        () -> {
+                            if (Status.FAILED.equals(orderResponse.getStatus()))
+                                log.debug("Order Response: {}", orderResponse);
+                        }
                 ));
     }
 }
