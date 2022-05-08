@@ -18,9 +18,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.math.MathFlux;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -201,15 +203,17 @@ class OrderControllerTest extends ExternalServiceAbstractTest {
     }
 
     private Mono<User> getUserWithMinBalance() {
-        return Flux.range(1, 50)
-                .flatMap(userClient::getUser)
-                .reduce((u1, u2) -> u1.getBalance() < u2.getBalance() ? u1 : u2);
+        return MathFlux.max(
+                Flux.range(1, 50).flatMap(userClient::getUser),
+                Comparator.comparing(User::getBalance)
+        );
     }
 
     private Mono<Product> getProductWithMaxPrice() {
-        return Flux.range(1, 50)
-                .flatMap(productClient::getProduct)
-                .reduce((p1, p2) -> p1.getPrice() > p2.getPrice() ? p1 : p2);
+        return MathFlux.max(
+                Flux.range(1, 50).flatMap(productClient::getProduct),
+                Comparator.comparing(Product::getPrice)
+        );
     }
 
     @Test
