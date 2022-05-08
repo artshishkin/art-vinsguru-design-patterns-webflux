@@ -3,7 +3,7 @@ package net.shyshkin.study.webfluxpatterns.sec03.client;
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.common.ExternalServiceAbstractTest;
 import net.shyshkin.study.webfluxpatterns.sec03.dto.ShippingRequest;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Slf4j
-@Disabled
+@DisplayName("Section03 ShippingClientTest")
 @ActiveProfiles("sec03")
 class ShippingClientTest extends ExternalServiceAbstractTest {
 

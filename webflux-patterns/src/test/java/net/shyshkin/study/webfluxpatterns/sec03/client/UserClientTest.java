@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.common.ExternalServiceAbstractTest;
 import net.shyshkin.study.webfluxpatterns.sec03.dto.PaymentRequest;
 import net.shyshkin.study.webfluxpatterns.sec03.dto.Status;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Slf4j
-@Disabled
+@DisplayName("Section03 UserClientTest")
 @ActiveProfiles("sec03")
 class UserClientTest extends ExternalServiceAbstractTest {
 

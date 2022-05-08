@@ -2,6 +2,7 @@ package net.shyshkin.study.webfluxpatterns.sec03.client;
 
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.common.ExternalServiceAbstractTest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -11,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Slf4j
+@DisplayName("Section03 ProductClientTest")
 @ActiveProfiles("sec03")
 class ProductClientTest extends ExternalServiceAbstractTest {
 

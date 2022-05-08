@@ -6,10 +6,7 @@ import net.shyshkin.study.webfluxpatterns.sec04.dto.InventoryRequest;
 import net.shyshkin.study.webfluxpatterns.sec04.dto.InventoryResponse;
 import net.shyshkin.study.webfluxpatterns.sec04.dto.PaymentRequest;
 import net.shyshkin.study.webfluxpatterns.sec04.dto.ShippingRequest;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.test.StepVerifier;
@@ -21,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Slf4j
+@DisplayName("Section04 ShippingClientTest")
 @ActiveProfiles("sec04")
 class ShippingClientTest extends ExternalServiceAbstractTest {
 

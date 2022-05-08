@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DisplayName("Section03 OrderControllerTest")
 @ActiveProfiles("sec03")
 class OrderControllerTest extends ExternalServiceAbstractTest {
 
