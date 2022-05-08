@@ -52,7 +52,7 @@ public class InventoryClient {
                 .retrieve()
                 .bodyToMono(InventoryResponse.class)
                 .onErrorResume(
-                        error -> error instanceof WebClientResponseException && ((WebClientResponseException) error).getStatusCode().is5xxServerError(),
+                        error -> error instanceof WebClientResponseException && ((WebClientResponseException) error).getStatusCode().is4xxClientError(),
                         error -> extractResponse((WebClientResponseException) error))
                 .onErrorReturn(fallbackInventoryResponse(request));
     }
