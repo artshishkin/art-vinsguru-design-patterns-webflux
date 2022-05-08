@@ -15,6 +15,6 @@ public class ShippingRequest {
 
     private Integer quantity;
     private Integer userId;
-    private UUID orderId;
+    private UUID inventoryId;
 
 }

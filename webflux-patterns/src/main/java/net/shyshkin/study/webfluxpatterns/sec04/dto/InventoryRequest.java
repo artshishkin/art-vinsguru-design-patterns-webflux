@@ -13,7 +13,7 @@ import java.util.UUID;
 @Builder
 public class InventoryRequest {
 
-    private UUID orderId;
+    private UUID paymentId;
     private Integer productId;
     private Integer quantity;
 

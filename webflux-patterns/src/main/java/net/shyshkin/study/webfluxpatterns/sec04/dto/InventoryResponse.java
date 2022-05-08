@@ -5,12 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class InventoryResponse {
 
+    private UUID inventoryId;
     private Integer productId;
     private Integer quantity;
     private Integer remainingQuantity;
