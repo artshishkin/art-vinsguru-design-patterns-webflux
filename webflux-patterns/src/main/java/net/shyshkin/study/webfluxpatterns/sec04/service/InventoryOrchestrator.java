@@ -7,6 +7,7 @@ import net.shyshkin.study.webfluxpatterns.sec04.dto.Status;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -26,7 +27,7 @@ public class InventoryOrchestrator extends Orchestrator {
 
     @Override
     public Predicate<OrchestrationRequestContext> isSuccess() {
-        return ctx -> Status.SUCCESS.equals(ctx.getInventoryResponse().getStatus());
+        return ctx -> Objects.nonNull(ctx.getInventoryResponse()) && Status.SUCCESS.equals(ctx.getInventoryResponse().getStatus());
     }
 
     @Override
