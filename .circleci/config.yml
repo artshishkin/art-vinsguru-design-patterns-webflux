@@ -17,22 +17,21 @@ jobs:
 
     steps:
       - checkout
-      - run: cd ./webflux-patterns
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-{{ checksum "webflux-patterns/pom.xml" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: mvn dependency:resolve install -Dmaven.test.skip=true
+      - run: mvn dependency:resolve install -Dmaven.test.skip=true -f webflux-patterns/pom.xml
       #      - run: mvn install dependency:go-offline -Dmaven.test.skip=true
 
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+          key: v1-dependencies-{{ checksum "webflux-patterns/pom.xml" }}
 
       # run tests!
-      - run: mvn integration-test
+      - run: mvn integration-test -f webflux-patterns/pom.xml
