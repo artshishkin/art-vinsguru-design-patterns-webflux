@@ -1,6 +1,7 @@
 package net.shyshkin.study.webfluxpatterns.sec05.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec05.client.CarClient;
 import net.shyshkin.study.webfluxpatterns.sec05.dto.ReservationItemRequest;
 import net.shyshkin.study.webfluxpatterns.sec05.dto.ReservationItemResponse;
@@ -9,6 +10,7 @@ import net.shyshkin.study.webfluxpatterns.sec05.mapper.CarMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CarReservationHandler extends ReservationHandler {
@@ -28,6 +30,7 @@ public class CarReservationHandler extends ReservationHandler {
         return flux
                 .map(carMapper::toCarRequest)
                 .transform(client::reserve)
-                .map(carMapper::toItemResponse);
+                .map(carMapper::toItemResponse)
+                .onErrorContinue((ex, obj) -> log.debug("Ex: {}, obj: {}", ex, obj));
     }
 }

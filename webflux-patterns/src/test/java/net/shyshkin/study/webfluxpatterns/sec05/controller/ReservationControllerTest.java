@@ -69,7 +69,7 @@ class ReservationControllerTest extends ExternalServiceAbstractTest {
     void reserve_wrongCategory() {
 
         //given
-        int count = 10;
+        int count = 20;
         var itemRequests = Flux.range(1, count)
                 .map(i -> ReservationItemRequest.builder()
                         .type(getType(i))
@@ -92,13 +92,12 @@ class ReservationControllerTest extends ExternalServiceAbstractTest {
                 .value(reservationResponse -> assertAll(
                         () -> assertThat(reservationResponse).hasNoNullFieldsOrProperties(),
                         () -> assertThat(reservationResponse.getItems())
-                                .hasSize(count / 2)
+                                .hasSize(count / 2 + count / 4)
                                 .allSatisfy(response -> assertAll(
                                         () -> assertThat(response).hasNoNullFieldsOrProperties(),
                                         () -> assertThat(response.getCity()).startsWith("City"),
                                         () -> assertThat(response.getFrom()).isEqualTo(LocalDate.now()),
                                         () -> assertThat(response.getTo()).isAfter(LocalDate.now()),
-                                        () -> assertThat(response.getType()).isEqualTo(ReservationType.CAR),
                                         () -> log.debug("Item: {}", response)
                                 )),
                         () -> assertThat(reservationResponse.getPrice()).isGreaterThan(0),
@@ -116,7 +115,11 @@ class ReservationControllerTest extends ExternalServiceAbstractTest {
     }
 
     private String getWrongCategory(int i) {
-        return i % 2 == 0 ? "FAKE_ROOM" : CarCategory.SPORTS.toString();
+        return i % 2 == 0 ?
+                i % 4 == 0 ?
+                        RoomCategory.QUEEN.toString() :
+                        "FAKE_ROOM" :
+                CarCategory.SPORTS.toString();
     }
 
 }
