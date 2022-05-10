@@ -107,7 +107,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
+<!--                    <compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
