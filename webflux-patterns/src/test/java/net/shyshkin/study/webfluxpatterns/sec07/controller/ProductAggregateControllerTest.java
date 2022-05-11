@@ -5,6 +5,7 @@ import net.shyshkin.study.webfluxpatterns.common.ExternalServiceAbstractTest;
 import net.shyshkin.study.webfluxpatterns.sec07.dto.ProductAggregate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -42,6 +43,30 @@ class ProductAggregateControllerTest extends ExternalServiceAbstractTest {
                         () -> assertThat(aggregate.getReviews())
                                 .hasSizeGreaterThanOrEqualTo(1)
                                 .allSatisfy(review -> assertThat(review).hasNoNullFieldsOrProperties()),
+                        () -> log.debug("Aggregate: {}", aggregate)
+                ));
+    }
+
+    @Test
+    @DisplayName("Requests with id of product without reviews should return empty list")
+    void getProductAggregate_absentReview() {
+        //given
+        Integer productId = 10;
+
+        //when
+        webTestClient.get()
+                .uri("/sec07/product/{id}", productId)
+                .exchange()
+
+                //then
+                .expectStatus().isOk()
+                .expectBody(ProductAggregate.class)
+                .value(aggregate -> assertAll(
+                        () -> assertThat(aggregate)
+                                .hasNoNullFieldsOrProperties()
+                                .hasFieldOrPropertyWithValue("id", productId),
+                        () -> assertThat(aggregate.getReviews())
+                                .hasSize(0),
                         () -> log.debug("Aggregate: {}", aggregate)
                 ));
     }
