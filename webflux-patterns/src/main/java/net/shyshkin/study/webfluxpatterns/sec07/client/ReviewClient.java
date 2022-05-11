@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 
 @Slf4j
@@ -31,6 +32,7 @@ public class ReviewClient {
                 .collectList()
                 .doOnError(ex -> log.debug("Ex: {}", ex.toString()))
                 .retry(5)
+                .timeout(Duration.ofMillis(500))
                 .onErrorReturn(List.of());
     }
 }
