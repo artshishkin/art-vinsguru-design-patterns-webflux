@@ -26,8 +26,17 @@ public class ProductClient {
                 .uri("/{id}", id)
                 .retrieve()
                 .bodyToMono(Product.class)
-                .timeout(Duration.ofMillis(500))
+                .timeout(Duration.ofMillis(500), fallback(id))
                 .doOnError(ex -> log.debug("Ex: {}", ex.toString()))
                 .onErrorResume(ex -> Mono.empty());
+    }
+
+    private Mono<Product> fallback(Integer id) {
+        return Mono.just(Product.builder()
+                .id(id)
+                .category("Default Category")
+                .description("Fake Description")
+                .price(0)
+                .build());
     }
 }
