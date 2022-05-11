@@ -20,6 +20,9 @@ app.external.service:
     sec05:
       car: ${app.external.service.baseUrl}/sec05/car
       room: ${app.external.service.baseUrl}/sec05/room
+    sec06:
+      product: ${app.external.service.baseUrl}/sec06/product
+      review: ${app.external.service.baseUrl}/sec06/review
 
 logging.level:
   net.shyshkin: DEBUG
