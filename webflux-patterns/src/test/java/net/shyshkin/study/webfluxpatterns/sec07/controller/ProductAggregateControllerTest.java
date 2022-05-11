@@ -48,7 +48,7 @@ class ProductAggregateControllerTest extends ExternalServiceAbstractTest {
     }
 
     @Test
-    @DisplayName("Requests with id of product without reviews should return empty list")
+    @DisplayName("Requests with id of product without reviews should return empty list without Retry")
     void getProductAggregate_absentReview() {
         //given
         Integer productId = 10;
