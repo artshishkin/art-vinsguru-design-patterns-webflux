@@ -28,6 +28,7 @@ public class ReviewClient {
                 .bodyToFlux(Review.class)
                 .collectList()
                 .doOnError(ex -> log.debug("Ex: {}", ex.toString()))
+                .retry(5)
                 .onErrorReturn(List.of());
     }
 }
