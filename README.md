@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/artshishkin/art-vinsguru-design-patterns-webflux.svg?style=svg)](https://circleci.com/gh/artshishkin/art-vinsguru-design-patterns-webflux)
+[![codecov](https://codecov.io/gh/artshishkin/art-vinsguru-design-patterns-webflux/branch/main/graph/badge.svg?token=U5YRYVEM7N)](https://codecov.io/gh/artshishkin/art-vinsguru-design-patterns-webflux)
 ![Spring Boot version][springver]
 ![Project licence][licence]
 # art-vinsguru-design-patterns-webflux
