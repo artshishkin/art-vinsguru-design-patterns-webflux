@@ -27,12 +27,12 @@ class ProductAggregateControllerTest extends ExternalServiceAbstractTest {
     WebTestClient webTestClient;
 
     @RepeatedTest(10)
-    @DisplayName("Request should take less then 3 seconds")
+    @DisplayName("Request should take less then 1.5 seconds")
     void getProductAggregate_expectDuration() {
         //given
         Integer productId = 1;
         LocalDateTime startTest = LocalDateTime.now();
-        Duration maxExpectedDuration = Duration.ofSeconds(3);
+        Duration maxExpectedDuration = Duration.ofMillis(1500);
 
         //when
         Flux<ProductAggregate> responseBody = webTestClient.get()
@@ -50,8 +50,8 @@ class ProductAggregateControllerTest extends ExternalServiceAbstractTest {
                                 .hasNoNullFieldsOrProperties()
                                 .hasFieldOrPropertyWithValue("id", productId),
                         () -> assertThat(aggregate.getReviews())
-                                .hasSizeGreaterThanOrEqualTo(1)
-                                .allSatisfy(review -> assertThat(review).hasNoNullFieldsOrProperties())
+                                .allSatisfy(review -> assertThat(review).hasNoNullFieldsOrProperties()),
+                        () -> log.debug("Aggregate: {}", aggregate)
                 ))
                 .verifyComplete();
         LocalDateTime finishTest = LocalDateTime.now();
