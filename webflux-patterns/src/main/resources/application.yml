@@ -23,6 +23,9 @@ app.external.service:
     sec06:
       product: ${app.external.service.baseUrl}/sec06/product
       review: ${app.external.service.baseUrl}/sec06/review
+    sec07:
+      product: ${app.external.service.baseUrl}/sec07/product
+      review: ${app.external.service.baseUrl}/sec07/review
 
 logging.level:
   net.shyshkin: DEBUG
