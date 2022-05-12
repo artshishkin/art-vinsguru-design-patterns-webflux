@@ -45,4 +45,5 @@ resilience4j.circuitbreaker:
       permittedNumberOfCallsInHalfOpenState: 2
       recordExceptions:
         - org.springframework.web.reactive.function.client.WebClientResponseException
+        - java.util.concurrent.TimeoutException
 

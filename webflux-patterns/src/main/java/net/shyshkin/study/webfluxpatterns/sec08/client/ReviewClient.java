@@ -1,5 +1,6 @@
 package net.shyshkin.study.webfluxpatterns.sec08.client;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec08.dto.Review;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ public class ReviewClient {
         webClient = builder.baseUrl(serverUrl).build();
     }
 
+    @CircuitBreaker(name = "review-service", fallbackMethod = "fallbackReviews")
     public Mono<List<Review>> getReviews(Integer id) {
         return webClient.get()
                 .uri("/{id}", id)
@@ -34,7 +36,11 @@ public class ReviewClient {
                 .doOnError(ex -> log.debug("Ex: {}", ex.toString()))
 //                .retry(5)
                 .retryWhen(Retry.fixedDelay(6, Duration.ofMillis(50)))
-                .timeout(Duration.ofMillis(700))
-                .onErrorReturn(List.of());
+                .timeout(Duration.ofMillis(700));
+    }
+
+    private Mono<List<Review>> fallbackReviews(Integer id, Throwable ex) {
+        log.debug("Fallback reviews called with error: {}", ex.toString());
+        return Mono.just(List.of());
     }
 }
