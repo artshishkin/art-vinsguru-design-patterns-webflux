@@ -5,5 +5,6 @@ services:
     image: artarkatesoft/vinsguru-external-services
     ports:
       - '7075:7070'
-#    environment:
+    environment:
+      'sec08.log.enabled': 'true'
 #      'sec01.delay.response': 3000
