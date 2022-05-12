@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,8 +32,9 @@ public class ReviewClient {
                 .bodyToFlux(Review.class)
                 .collectList()
                 .doOnError(ex -> log.debug("Ex: {}", ex.toString()))
-                .retry(5)
-                .timeout(Duration.ofMillis(500))
+//                .retry(5)
+                .retryWhen(Retry.fixedDelay(5, Duration.ofMillis(100)))
+                .timeout(Duration.ofMillis(700))
                 .onErrorReturn(List.of());
     }
 }
