@@ -12,6 +12,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @Slf4j
 @Component
 public class ShippingClient {
@@ -46,6 +48,8 @@ public class ShippingClient {
                 .retrieve()
                 .bodyToMono(ShippingResponse.class)
                 .log()
+                .retry(3)
+                .timeout(Duration.ofMillis(500))
                 .onErrorResume(
                         error -> error instanceof WebClientResponseException && ((WebClientResponseException) error).getStatusCode().is4xxClientError(),
                         error -> extractResponse((WebClientResponseException) error))
