@@ -32,3 +32,17 @@ app.external.service:
 
 logging.level:
   net.shyshkin: DEBUG
+
+#resilience4j docs: https://resilience4j.readme.io/docs/circuitbreaker
+resilience4j.circuitbreaker:
+  instances:
+    review-service:
+      slidingWindowType: COUNT_BASED
+      slidingWindowSize: 4
+      minimumNumberOfCalls: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10s
+      permittedNumberOfCallsInHalfOpenState: 2
+      recordExceptions:
+        - org.springframework.web.reactive.function.client.WebClientResponseException
+
