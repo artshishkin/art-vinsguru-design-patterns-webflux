@@ -33,7 +33,7 @@ public class ReviewClient {
                 .collectList()
                 .doOnError(ex -> log.debug("Ex: {}", ex.toString()))
 //                .retry(5)
-                .retryWhen(Retry.fixedDelay(5, Duration.ofMillis(100)))
+                .retryWhen(Retry.fixedDelay(6, Duration.ofMillis(50)))
                 .timeout(Duration.ofMillis(700))
                 .onErrorReturn(List.of());
     }
