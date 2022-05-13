@@ -3,13 +3,17 @@ package net.shyshkin.study.webfluxpatterns.sec08.controller;
 import lombok.extern.slf4j.Slf4j;
 import net.shyshkin.study.webfluxpatterns.sec07.dto.ProductAggregate;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -27,29 +31,38 @@ class ProductAggregateControllerManualTest {
     @Autowired
     WebTestClient webTestClient;
 
-    @RepeatedTest(10)
-    @DisplayName("All requests should return OK")
-    void getProductAggregate_ok() {
+    @Test
+    void circuitBreakerTest() {
         //given
         Integer productId = 1;
 
         //when
-        webTestClient.get()
-                .uri("/sec08/product/{id}", productId)
-                .exchange()
+        Flux<ProductAggregate> serviceCalls = Flux
+                .interval(Duration.ofSeconds(1))
+                .take(Duration.ofMinutes(1))
+                .publishOn(Schedulers.boundedElastic())
+                .doOnNext(i -> System.out.printf("\n\n-----Second %d-----\n", i))
+                .flatMap(i ->
+                        webTestClient.get()
+                                .uri("/sec08/product/{id}", productId)
+                                .exchange()
 
-                //then
-                .expectStatus().isOk()
-                .expectBody(ProductAggregate.class)
-                .value(aggregate -> assertAll(
+                                //then
+                                .expectStatus().isOk()
+                                .returnResult(ProductAggregate.class)
+                                .getResponseBody()
+                );
+
+        StepVerifier.create(serviceCalls)
+                .thenConsumeWhile(pa -> true, aggregate -> assertAll(
                         () -> assertThat(aggregate)
                                 .hasNoNullFieldsOrProperties()
                                 .hasFieldOrPropertyWithValue("id", productId),
                         () -> assertThat(aggregate.getReviews())
-                                .hasSizeGreaterThanOrEqualTo(1)
                                 .allSatisfy(review -> assertThat(review).hasNoNullFieldsOrProperties()),
                         () -> log.debug("Aggregate: {}", aggregate)
-                ));
+                ))
+                .verifyComplete();
     }
 
 }
