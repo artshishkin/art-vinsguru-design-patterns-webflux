@@ -56,5 +56,10 @@ resilience4j.ratelimiter:
         limitRefreshPeriod: 20s
         limitForPeriod: 5
         timeoutDuration: 5s
+      review-service:
+        limitRefreshPeriod: 20s
+        limitForPeriod: 3
+        timeoutDuration: 0s
+
 
 
