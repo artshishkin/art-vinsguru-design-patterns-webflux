@@ -39,9 +39,9 @@ resilience4j.circuitbreaker:
     review-service:
       slidingWindowType: COUNT_BASED
       slidingWindowSize: 4
-      minimumNumberOfCalls: 2
+#      minimumNumberOfCalls: 2
       failureRateThreshold: 50
-      waitDurationInOpenState: 10s
+#      waitDurationInOpenState: 10s
       permittedNumberOfCallsInHalfOpenState: 2
       recordExceptions:
         - org.springframework.web.reactive.function.client.WebClientResponseException
