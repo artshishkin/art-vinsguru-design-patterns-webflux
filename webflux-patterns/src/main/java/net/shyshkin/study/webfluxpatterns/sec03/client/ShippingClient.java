@@ -45,6 +45,7 @@ public class ShippingClient {
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(ShippingResponse.class)
+                .retry(6)
                 .onErrorResume(
                         error -> error instanceof WebClientResponseException && ((WebClientResponseException) error).getStatusCode().is5xxServerError(),
                         error -> extractResponse((WebClientResponseException) error))
