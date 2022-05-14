@@ -49,8 +49,7 @@ class BulkheadManualTest {
     }
 
     private Mono<Void> fibRequests(int parallelCallsCount) {
-        return Mono.delay(Duration.ofMillis(100))
-                .thenMany(Flux.range(1, parallelCallsCount))
+        return Flux.range(1, parallelCallsCount)
                 .flatMap(i -> webClient.get()
                         .uri("/fib/45")
                         .retrieve()
@@ -61,7 +60,8 @@ class BulkheadManualTest {
     }
 
     private Mono<Void> productRequests(int parallelCallsCount) {
-        return Flux.range(1, parallelCallsCount)
+        return Mono.delay(Duration.ofMillis(100))
+                .thenMany(Flux.range(1, parallelCallsCount))
                 .flatMap(i -> webClient.get()
                         .uri("/product/1")
                         .retrieve()
