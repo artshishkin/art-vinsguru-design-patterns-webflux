@@ -15,7 +15,7 @@ import java.time.Duration;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Disabled("Only for manual test. Start External Services (`docker-compose up`) and WebFluxPatternsApplication with profile `sec10`")
-class BulkheadTest {
+class BulkheadManualTest {
 
     WebClient webClient;
 
