@@ -1,6 +1,7 @@
 package net.shyshkin.study.webfluxpatterns.sec09.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.shyshkin.study.webfluxpatterns.common.ExternalServiceAbstractTest;
 import net.shyshkin.study.webfluxpatterns.sec07.dto.ProductAggregate;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @TestMethodOrder(value = MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("sec09")
-class ProductAggregateControllerTest {
+class ProductAggregateControllerTest extends ExternalServiceAbstractTest {
 
     @Autowired
     WebTestClient webTestClient;
