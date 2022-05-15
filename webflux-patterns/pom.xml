@@ -248,6 +248,26 @@
             </plugin>
 
         </plugins>
+
+        <extensions>
+            <extension>
+                <groupId>io.packagecloud.maven.wagon</groupId>
+                <artifactId>maven-packagecloud-wagon</artifactId>
+                <version>0.0.6</version>
+            </extension>
+        </extensions>
+
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>packagecloud.my_repo_releases</id>
+            <url>packagecloud+https://packagecloud.io/art_shishkin/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>packagecloud.my_repo_snapshots</id>
+            <url>packagecloud+https://packagecloud.io/art_shishkin/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
